@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Email envoyé{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-body text-center p-5">
+                    <div class="mb-4">
+                        <i class="fas fa-envelope text-success" style="font-size: 60px;"></i>
+                    </div>
+                    <h2 class="text-success mb-4">Email envoyé !</h2>
+                    <p class="lead">
+                        Un email a été envoyé à votre adresse email.
+                    </p>
+
+                    <p class="text-muted">
+                        Si vous ne recevez pas d'email, vérifiez votre dossier spam ou 
+                        <a href="{{ path('app_forgot_password_request') }}">essayez à nouveau</a>.
+                    </p>
+                    <div class="mt-4">
+                        <a href="{{ path('app_login') }}" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt"></i> Retour à la connexion
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

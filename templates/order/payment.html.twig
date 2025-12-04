@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paiement{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">💳 Paiement de la commande #{{ order.id }}</h3>
+                </div>
+                <div class="card-body">
+                    <h5 class="mb-4">Récapitulatif de votre commande</h5>
+                    
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Livre</th>
+                                <th>Quantité</th>
+                                <th>Prix</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in order.items %}
+                                <tr>
+                                    <td>{{ item.livre.titre }}</td>
+                                    <td>{{ item.quantity }}</td>
+                                    <td>{{ item.subtotal|number_format(2, '.', ' ') }} €</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="2" class="text-end"><strong>Total à payer:</strong></td>
+                                <td><h4 class="text-success mb-0">{{ order.totalPrice|number_format(2, '.', ' ') }} €</h4></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                    <hr class="my-4">
+
+                    <h5 class="mb-3">Informations de paiement</h5>
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i> Ceci est une simulation de paiement. 
+                        Aucune transaction réelle ne sera effectuée.
+                    </div>
+
+                    <form>
+                        <div class="mb-3">
+                            <label for="cardNumber" class="form-label">Numéro de carte</label>
+                            <input type="text" class="form-control" id="cardNumber" placeholder="1234 5678 9012 3456" value="1234 5678 9012 3456" readonly>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="expiry" class="form-label">Date d'expiration</label>
+                                <input type="text" class="form-control" id="expiry" placeholder="MM/AA" value="12/25" readonly>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="cvv" class="form-label">CVV</label>
+                                <input type="text" class="form-control" id="cvv" placeholder="123" value="123" readonly>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <a href="{{ path('app_order_confirm', {id: order.id}) }}" class="btn btn-success btn-lg">
+                            <i class="fas fa-check"></i> Confirmer le paiement
+                        </a>
+                        <a href="{{ path('app_cart') }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Retour au panier
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

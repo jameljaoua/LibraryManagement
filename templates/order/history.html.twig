@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes commandes{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="mb-4">📦 Historique de mes commandes</h1>
+
+    {% set orders = app.user.orders|default([]) %}
+
+    {% if orders|length > 0 %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Date</th>
+                        <th>Montant</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            <td>{{ order.id }}</td>
+                            <td>{{ order.createdAt|date('d/m/Y H:i') }}</td>
+                            <td>{{ order.totalPrice|number_format(2, '.', ' ') }} €</td>
+                            <td>
+                                {% if order.status == 'paid' %}
+                                    <span class="badge bg-success">Payée</span>
+                                {% elseif order.status == 'pending' %}
+                                    <span class="badge bg-warning">En attente</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Annulée</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ path('app_order_success', {id: order.id}) }}" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-eye"></i> Voir
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center">
+            <h4>Aucune commande pour le moment</h4>
+            <p>Commencez vos achats dès maintenant !</p>
+            <a href="{{ path('app_home') }}" class="btn btn-primary mt-3">
+                <i class="fas fa-shopping-cart"></i> Voir les livres
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

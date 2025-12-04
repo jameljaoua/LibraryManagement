@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau mot de passe{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0">🔐 Nouveau mot de passe</h3>
+                </div>
+                <div class="card-body">
+                    {{ form_start(resetForm) }}
+                        <div class="mb-3">
+                            {{ form_label(resetForm.plainPassword.first, 'Nouveau mot de passe', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(resetForm.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(resetForm.plainPassword.first) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(resetForm.plainPassword.second, 'Confirmer le mot de passe', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(resetForm.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(resetForm.plainPassword.second) }}
+                        </div>
+
+                        <button class="btn btn-success w-100" type="submit">
+                            <i class="fas fa-check"></i> Réinitialiser le mot de passe
+                        </button>
+                    {{ form_end(resetForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - Bibliothèque{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="text-center mb-4">📚 Bienvenue dans notre Bibliothèque</h1>
+            <p class="text-center text-muted">Découvrez notre collection de livres</p>
+
+        </div>
+    </div>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+<div class="container mt-4">
+    <form method="get" action="{{ path('app_home') }}" class="row g-3 p-3 border rounded shadow-sm bg-light">
+        <h4 class="text-center mb-3">🔍 Recherche avancée</h4>
+
+        <div class="col-md-4">
+            <label class="form-label">Titre</label>
+            <input type="text" name="titre" class="form-control"
+                   placeholder="Rechercher par titre" value="{{ app.request.get('titre') }}">
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label">Auteurs</label>
+            <input type="text" name="auteur" class="form-control"
+                   placeholder="Nom d’auteurs" value="{{ app.request.get('auteurs') }}">
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label">Catégorie</label>
+            <input type="text" name="categorie" class="form-control"
+                   placeholder="Catégorie" value="{{ app.request.get('categorie') }}">
+        </div>
+
+        <div class="col-12 text-center mt-3">
+            <button class="btn btn-primary px-5">Rechercher</button>
+            <a href="{{ path('app_home') }}" class="btn btn-secondary px-4">Réinitialiser</a>
+        </div>
+    </form>
+</div>
+
+
+   
+    <div class="row">
+        {% for livre in livres %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ livre.titre }}</h5>
+                        <p class="card-text">
+                            <strong>Auteur(s):</strong> 
+                            {% for auteurs in livre.auteurs %}
+                                {{ auteurs }}{% if not loop.last %}, {% endif %}
+                            {% endfor %}
+                        </p>
+                        <p class="card-text"><strong>Éditeur:</strong> {{ livre.editeur }}</p>
+                        <p class="card-text"><strong>Catégorie:</strong> {{ livre.categorie }}</p>
+                        <p class="card-text"><strong>ISBN:</strong> {{ livre.isbn }}</p>
+                        <p class="card-text"><small class="text-muted">Publié le {{ livre.datepub|date('d/m/Y') }}</small></p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <h4 class="text-primary mb-0">{{ livre.prix|number_format(2, '.', ' ') }} €</h4>
+                            <span class="badge bg-info">Stock: {{ livre.qte }}</span>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white">
+                        {% if livre.qte > 0 %}
+                            {% if app.user %}
+                                <a href="{{ path('app_cart_add', {id: livre.id}) }}" class="btn btn-success w-100">
+                                    <i class="fas fa-cart-plus"></i> Ajouter au panier
+                                </a>
+                            {% else %}
+                                <a href="{{ path('app_login') }}" class="btn btn-primary w-100">
+                                    Connectez-vous pour acheter
+                                </a>
+                            {% endif %}
+                        {% else %}
+                            <button class="btn btn-secondary w-100" disabled>Rupture de stock</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    Aucun livre disponible pour le moment.
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
